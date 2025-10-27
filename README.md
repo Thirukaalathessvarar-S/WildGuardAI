@@ -17,10 +17,12 @@ It automates animal monitoring and rescue management using **AI-powered image an
 ## 🖥️ Screenshots
 
 ### Dashboard Overview
-![Dashboard](./941cfbdb-300c-4b6f-8127-000a973b51dd.png)
+<img width="1913" height="947" alt="image" src="https://github.com/user-attachments/assets/6bcaa5e2-5018-45ed-abf3-beb3a288e650" />
+
 
 ### Animal Details
-![Animal Details](./8090a2f5-901c-4dc7-879e-912a4a58bbc6.png)
+<img width="1896" height="967" alt="image" src="https://github.com/user-attachments/assets/a9199a4e-6412-4e41-ad7b-59e7ee1a7069" />
+
 
 ---
 
