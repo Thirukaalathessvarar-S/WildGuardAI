@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildlife Rescue Centre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 25px;
+            background: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.15);
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .animal-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .animal-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .animal-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .animal-card img {
+            max-width: 200px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-good {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-critical {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            margin-top: 15px;
+        }
+
+        .action-buttons button {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding: 8px 20px;
+            font-size: 0.9em;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+        }
+
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .rescue-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #764ba2;
+        }
+
+        .rescue-card h3 {
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦁 Wildlife Rescue Centre</h1>
+            <p class="subtitle">Animal Rescue & Care Management System</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('animals')">Animals</button>
+            <button class="tab-btn" onclick="switchTab('add-animal')">Add Animal</button>
+            <button class="tab-btn" onclick="switchTab('rescues')">Rescue Cases</button>
+        </div>
+
+        <div class="content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h2>Dashboard Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="total-animals">0</h3>
+                        <p>Total Animals</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="total-rescues">0</h3>
+                        <p>Rescue Cases</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="critical-cases">0</h3>
+                        <p>Critical Cases</p>
+                    </div>
+                </div>
+                <button onclick="loadDashboard()">Refresh Dashboard</button>
+            </div>
+
+            <!-- Animals Tab -->
+            <div id="animals" class="tab-content">
+                <h2>All Animals</h2>
+                <div id="animals-list" class="loading">Loading animals...</div>
+            </div>
+
+            <!-- Add Animal Tab -->
+            <div id="add-animal" class="tab-content">
+                <h2>Register New Animal</h2>
+                <div id="add-message"></div>
+                <form id="animal-form" onsubmit="addAnimal(event)">
+                    <div class="form-group">
+                        <label for="species">Species *</label>
+                        <input type="text" id="species" required placeholder="e.g., Tiger, Elephant, Deer">
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL</label>
+                        <input type="url" id="imageUrl" placeholder="https://example.com/animal.jpg">
+                    </div>
+                    <button type="submit">Register Animal</button>
+                </form>
+            </div>
+
+            <!-- Rescues Tab -->
+            <div id="rescues" class="tab-content">
+                <h2>Rescue Cases</h2>
+                <div id="rescues-list" class="loading">Loading rescue cases...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8081';
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'animals') {
+                loadAnimals();
+            } else if (tabName === 'rescues') {
+                loadRescues();
+            } else if (tabName === 'dashboard') {
+                loadDashboard();
+            }
+        }
+
+        // Load Dashboard
+        async function loadDashboard() {
+            try {
+                const animalsRes = await fetch(`${API_BASE}/animals/all`);
+                const animals = await animalsRes.json();
+                
+                const rescuesRes = await fetch(`${API_BASE}/rescue/all`);
+                const rescues = await rescuesRes.json();
+
+                document.getElementById('total-animals').textContent = animals.length;
+                document.getElementById('total-rescues').textContent = rescues.length;
+                
+                const critical = animals.filter(a => a.conditionStatus === 'Critical').length;
+                document.getElementById('critical-cases').textContent = critical;
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Load Animals
+        async function loadAnimals() {
+            const container = document.getElementById('animals-list');
+            container.innerHTML = '<div class="loading">Loading animals...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/animals/all`);
+                const animals = await response.json();
+
+                if (animals.length === 0) {
+                    container.innerHTML = '<p>No animals registered yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = animals.map(animal => `
+                    <div class="animal-card">
+                        <h3>🦁 ${animal.species || 'Unknown Species'}</h3>
+                        <p><strong>ID:</strong> ${animal.animalId}</p>
+                        <p><strong>Class:</strong> ${animal.classes || 'N/A'}</p>
+                        <p><strong>Health Status:</strong> ${animal.healthStatus || 'N/A'}</p>
+                        <span class="status-badge ${animal.conditionStatus === 'Good' ? 'status-good' : 'status-critical'}">
+                            ${animal.conditionStatus || 'Unknown'}
+                        </span>
+                        <p><strong>Rescue Case ID:</strong> ${animal.rescueId}</p>
+                        ${animal.imageUrl ? `<img src="${animal.imageUrl}" alt="${animal.species}">` : ''}
+                        <div class="action-buttons">
+                            <button class="delete-btn" onclick="deleteAnimal(${animal.animalId})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                container.innerHTML = `<div class="error">Error loading animals: ${error.message}</div>`;
+            }
+        }
+
+        // Add Animal
+        async function addAnimal(event) {
+            event.preventDefault();
+            const messageDiv = document.getElementById('add-message');
+            messageDiv.innerHTML = '<div class="loading">Registering animal...</div>';
+
+            const data = {
+                species: document.getElementById('species').value,
+                imageUrl: document.getElementById('imageUrl').value || null
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/animals`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.text();
+                    messageDiv.innerHTML = `<div class="success">${result}</div>`;
+                    document.getElementById('animal-form').reset();
+                    setTimeout(() => {
+                        messageDiv.innerHTML = '';
+                    }, 3000);
+                } else {
+                    messageDiv.innerHTML = `<div class="error">Failed to register animal</div>`;
+                }
+            } catch (error) {
+                messageDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Delete Animal
+        async function deleteAnimal(id) {
+            if (!confirm('Are you sure you want to delete this animal?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/animals/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    loadAnimals();
+                } else {
+                    alert('Failed to delete animal');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Load Rescues
+        async function loadRescues() {
+            const container = document.getElementById('rescues-list');
+            container.innerHTML = '<div class="loading">Loading rescue cases...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/rescue/all`);
+                const rescues = await response.json();
+
+                if (rescues.length === 0) {
+                    container.innerHTML = '<p>No rescue cases found.</p>';
+                    return;
+                }
+
+                container.innerHTML = rescues.map(rescue => `
+                    <div class="rescue-card">
+                        <h3>📋 Case #${rescue.rescueId}</h3>
+                        <p><strong>Issue Type:</strong> ${rescue.issueType}</p>
+                        <p><strong>Volunteers:</strong> ${rescue.volunteers || 'None assigned'}</p>
+                        <p><strong>Animals:</strong> ${rescue.animalList ? rescue.animalList.length : 0}</p>
+                        ${rescue.animalList && rescue.animalList.length > 0 ? `
+                            <details>
+                                <summary style="cursor: pointer; margin-top: 10px;">View Animals (${rescue.animalList.length})</summary>
+                                <ul style="margin-top: 10px; padding-left: 20px;">
+                                    ${rescue.animalList.map(a => `<li>${a.species} (ID: ${a.animalId})</li>`).join('')}
+                                </ul>
+                            </details>
+                        ` : ''}
+                    </div>
+                `).join('');
+            } catch (error) {
+                container.innerHTML = `<div class="error">Error loading rescues: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadDashboard();
+        };
+    </script>
+</body>
+</html>
